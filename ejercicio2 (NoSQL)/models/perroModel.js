@@ -6,18 +6,26 @@ const adoptanteSchema = new mongoose.Schema({
         type: String,
         required: true 
     },
-    correoElectronico: {
+    raza: {
         type: String,
         required: true, 
         unique: true,   
     },
-    direccion: {
+    edad: {
+        type: Number,
+        required: true,
+    },
+    tamaño: {
         type: String,
-        required: true 
+        required: true,
+    },
+    estadoAdopcion: {
+        type: String,
+        required: true,
     }
 });
 
 // Crear el modelo con el esquema definido
-const Adoptante = mongoose.model('Adoptante', adoptanteSchema);
+const Perro = mongoose.model('Perros', adoptanteSchema);
 
-module.exports = Adoptante;
+module.exports = Perro;

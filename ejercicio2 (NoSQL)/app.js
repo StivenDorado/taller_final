@@ -8,6 +8,7 @@ const port = 4000;
 
 // Rutas a Usar
 const adoptanteRouter = require('./routes/adoptanteRouter')
+const perroRouter = require('./routes/perroRouter')
 
 
 
@@ -18,7 +19,7 @@ app.use(express.json())
 app.use('/api', adoptanteRouter)
 
 
-app.use('/api', )
+app.use('/api', perroRouter)
 
 
 

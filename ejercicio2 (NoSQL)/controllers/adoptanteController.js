@@ -1,65 +1,67 @@
-const Adoptante = require('../models/adoptanteModel');
+const Adoptante = require('../models/AdoptanteModel'); // Corrección aquí
 
-// adoptante Controllers
+// Controladores de Adoptantes
 
-// Get all departments
-const obtenerDpte = async (req, res) => {
+// Obtener todos los adoptantes
+const obtenerAdoptantes = async (req, res) => {
     try {
-        const departaments = await adoptante.find();
-        res.json(departaments);
-    }
-    catch (e) {
-        res.status(500).json({mensaje:'Error al mostrar adoptante'})
-    }
-}
-
-// Post all Departaments
-const crearDpte = async (req, res) => {
-    try {
-        const { nombre, correoElectronico, direccion} = req.body;
-        const newDpte = new adoptante({nombre, correoElectronico, direccion});
-        await newDpte.save();
-        res.json({mensaje:newDpte});
-    }
-    catch (e) {
-        res.status(500).json({mensaje:'Error al crear adoptante'})
-    }
-}
-
-
-// PUT - Actualizar un adoptante
-const actualizarDpte = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { nombre, correoElectronico, direccion} = req.body;
-        // Verificar que los campos requeridos no estén vacíos
-        if (!nombre || !correoElectronico, direccion) {
-            return res.status(400).json({ message: "Los campos nombre y descripción son obligatorios" });
-        }
-        // Actualizar el adoptante
-        const dpteActualizado = await adoptante.findByIdAndUpdate(id, { nombre, correoElectronico, direccion}, { new: true });
-        if (!dpteActualizado) {
-            return res.status(404).json({ message: "adoptante no encontrado" });
-        }
-        res.json({ message: "adoptante actualizado con éxito", adoptante: dpteActualizado });
-    } catch (e) {
-        res.status(500).json({ message: "Error al actualizar el adoptante", error: e.message });
+        const adoptantes = await Adoptante.find();
+        res.json(adoptantes);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener los adoptantes' });
     }
 };
 
-
-
-// Delete all adoptante
-const eliminarDpte = async (req, res) => {
-    const { id } = req.params;
-    let dpteEliminado = await adoptante.findByIdAndDelete(id);
-    if (!dpteEliminado) {
-        return res.json({msj: "adoptante no encontrado"});
+// Crear un adoptante
+const crearAdoptante = async (req, res) => {
+    try {
+        const { nombre, correoElectronico, direccion } = req.body;
+        const nuevoAdoptante = new Adoptante({ nombre, correoElectronico, direccion });
+        await nuevoAdoptante.save();
+        res.json({ mensaje: 'Adoptante creado con éxito', adoptante: nuevoAdoptante });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al crear el adoptante' });
     }
-    else {
-        res.json({msj:'adoptante eliminado', dpteEliminado})
+};
+
+// Actualizar un adoptante
+const actualizarAdoptante = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, correoElectronico, direccion } = req.body;
+
+        // Verificar que los campos requeridos no estén vacíos
+        if (!nombre || !correoElectronico || !direccion) {
+            return res.status(400).json({ mensaje: "Los campos nombre, correo electrónico y dirección son obligatorios" });
+        }
+
+        // Actualizar el adoptante
+        const adoptanteActualizado = await Adoptante.findByIdAndUpdate(id, { nombre, correoElectronico, direccion }, { new: true });
+
+        if (!adoptanteActualizado) {
+            return res.status(404).json({ mensaje: "Adoptante no encontrado" });
+        }
+
+        res.json({ mensaje: "Adoptante actualizado con éxito", adoptante: adoptanteActualizado });
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al actualizar el adoptante", error: error.message });
     }
-}
+};
 
+// Eliminar un adoptante
+const eliminarAdoptante = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const adoptanteEliminado = await Adoptante.findByIdAndDelete(id);
 
-module.exports = {obtenerDpte, crearDpte, actualizarDpte, eliminarDpte}
+        if (!adoptanteEliminado) {
+            return res.status(404).json({ mensaje: "Adoptante no encontrado" });
+        }
+
+        res.json({ mensaje: 'Adoptante eliminado con éxito', adoptante: adoptanteEliminado });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al eliminar el adoptante', error: error.message });
+    }
+};
+
+module.exports = { obtenerAdoptantes, crearAdoptante, actualizarAdoptante, eliminarAdoptante };

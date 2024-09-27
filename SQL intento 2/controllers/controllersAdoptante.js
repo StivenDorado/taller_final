@@ -1,0 +1,1 @@
+const { adopciones } = require('../models')
